@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { CheckCircle2, MessageCircle, Sparkles } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
@@ -13,70 +12,72 @@ const BANNER_SRC =
 
 export function Hero() {
   return (
-    <section className="relative isolate flex min-h-[100svh] items-end overflow-hidden pb-16 pt-32 sm:pb-20 sm:pt-40">
-      {/* Full-bleed background banner */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src={BANNER_SRC}
-          alt="PlayStation 5 et manette DualSense — location à domicile au Maroc"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-background/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
-      </div>
-
+    <section className="relative isolate overflow-hidden bg-background">
       {/* Invisible heading kept for SEO/accessibility — visual title removed per design. */}
       <h1 className="sr-only">
         Transformez votre journée en expérience gaming ultime — Location PlayStation 5 à domicile
         au Maroc
       </h1>
 
-      <Container>
-        <div className="flex flex-col items-start gap-7">
-          <AnimateIn>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-primary-light">
-              <Sparkles className="size-3.5" aria-hidden />
-              Disponible aujourd&apos;hui
-            </span>
-          </AnimateIn>
+      {/* Banner: full width, natural aspect ratio, never cropped. */}
+      <div className="relative">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={BANNER_SRC}
+          alt="PlayStation 5 et manette DualSense — location à domicile au Maroc"
+          className="block h-auto w-full"
+        />
+        {/* Subtle top fade so the fixed nav stays readable over the image. */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background/60 to-transparent" />
+      </div>
 
-          <AnimateIn delay={0.16} className="flex w-full flex-col gap-3 sm:flex-row">
-            <Button href="#reservation" variant="primary" size="lg" className="w-full sm:w-auto">
-              Réserver maintenant
-            </Button>
-            <Button
-              href={whatsappHref()}
-              variant="secondary"
-              size="lg"
-              icon={MessageCircle}
-              className="w-full sm:w-auto"
-            >
-              Contacter sur WhatsApp
-            </Button>
-          </AnimateIn>
+      {/* Content band, pulled up over the banner's lower edge. Normal flow so it always
+          renders in full, regardless of the banner's rendered height. */}
+      <div className="relative -mt-24 pb-10 pt-16 sm:-mt-32 sm:pb-14 sm:pt-20">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/85 to-transparent" />
 
-          <AnimateIn delay={0.24} className="flex flex-wrap gap-x-6 gap-y-3">
-            {CHECKLIST.map((item) => (
-              <span
-                key={item}
-                className="inline-flex items-center gap-2 text-sm font-medium text-foreground-muted"
-              >
-                <CheckCircle2 className="size-4 text-primary-light" aria-hidden />
-                {item}
+        <Container>
+          <div className="flex flex-col items-start gap-5 sm:gap-7">
+            <AnimateIn>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-primary-light">
+                <Sparkles className="size-3.5" aria-hidden />
+                Disponible aujourd&apos;hui
               </span>
-            ))}
-          </AnimateIn>
+            </AnimateIn>
 
-          <AnimateIn delay={0.32}>
-            <AvailabilityCounter />
-          </AnimateIn>
-        </div>
-      </Container>
+            <AnimateIn delay={0.16} className="flex w-full flex-col gap-3 sm:flex-row">
+              <Button href="#reservation" variant="primary" size="lg" className="w-full sm:w-auto">
+                Réserver maintenant
+              </Button>
+              <Button
+                href={whatsappHref()}
+                variant="secondary"
+                size="lg"
+                icon={MessageCircle}
+                className="w-full sm:w-auto"
+              >
+                Contacter sur WhatsApp
+              </Button>
+            </AnimateIn>
+
+            <AnimateIn delay={0.24} className="flex flex-wrap gap-x-6 gap-y-3">
+              {CHECKLIST.map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-foreground-muted"
+                >
+                  <CheckCircle2 className="size-4 text-primary-light" aria-hidden />
+                  {item}
+                </span>
+              ))}
+            </AnimateIn>
+
+            <AnimateIn delay={0.32}>
+              <AvailabilityCounter />
+            </AnimateIn>
+          </div>
+        </Container>
+      </div>
     </section>
   );
 }
