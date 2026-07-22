@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { AnimateIn } from "@/components/ui/AnimateIn";
 import { AvailabilityCounter } from "@/components/ui/AvailabilityCounter";
-import { PS5Showcase } from "@/components/sections/hero/PS5Showcase";
+import { HeroBanner } from "@/components/sections/hero/HeroBanner";
 import { whatsappHref } from "@/lib/constants";
 
 const CHECKLIST = ["Livraison à domicile", "Installation incluse", "Assistance disponible"];
@@ -82,7 +82,7 @@ export function Hero() {
         </div>
 
         <AnimateIn direction="left" delay={0.2}>
-          <PS5Showcase />
+          <HeroBanner />
         </AnimateIn>
       </Container>
     </section>
