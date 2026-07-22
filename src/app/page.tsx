@@ -5,6 +5,7 @@ import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 import { Hero } from "@/components/sections/Hero";
 import { SocialProof } from "@/components/sections/SocialProof";
 import { Advantages } from "@/components/sections/Advantages";
+import { Games } from "@/components/sections/Games";
 import { Pricing } from "@/components/sections/Pricing";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Gallery } from "@/components/sections/Gallery";
@@ -24,15 +25,23 @@ function StructuredData() {
     url: SITE.url,
     telephone: SITE.phoneDisplay,
     areaServed: SITE.deliveryZones,
-    priceRange: `${Math.min(...PACKS.map((p) => p.price))}-${Math.max(
-      ...PACKS.map((p) => p.price),
+    priceRange: `${Math.min(...PACKS.map((p) => p.weekdayPrice))}-${Math.max(
+      ...PACKS.map((p) => p.weekendPrice),
     )} MAD`,
-    makesOffer: PACKS.map((pack) => ({
-      "@type": "Offer",
-      name: pack.name,
-      price: pack.price,
-      priceCurrency: "MAD",
-    })),
+    makesOffer: PACKS.flatMap((pack) => [
+      {
+        "@type": "Offer",
+        name: `${pack.name} (Lun-Jeu)`,
+        price: pack.weekdayPrice,
+        priceCurrency: "MAD",
+      },
+      {
+        "@type": "Offer",
+        name: `${pack.name} (Ven-Dim)`,
+        price: pack.weekendPrice,
+        priceCurrency: "MAD",
+      },
+    ]),
   };
 
   const faqLd = {
@@ -71,6 +80,7 @@ export default function Home() {
         <Hero />
         <SocialProof />
         <Advantages />
+        <Games />
         <Pricing />
         <HowItWorks />
         <Gallery />

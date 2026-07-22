@@ -1,4 +1,4 @@
-import { Check, Gamepad } from "lucide-react";
+import { Check, Gamepad, Info } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
@@ -52,13 +52,24 @@ export function Pricing() {
 
                   <div className="mt-6 flex items-end gap-2">
                     <span className="text-5xl font-semibold tracking-tight text-white">
-                      {pack.price}
+                      {pack.weekdayPrice}
                     </span>
                     <span className="pb-1.5 text-base font-medium text-foreground-muted">
                       MAD
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-foreground-subtle">{pack.duration}</p>
+                  <p className="mt-1 text-sm text-foreground-subtle">
+                    Lun - Jeu · {pack.duration}
+                  </p>
+
+                  <div className="mt-3 flex w-fit items-center gap-2 rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1.5">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-secondary-light">
+                      Ven - Sam - Dim
+                    </span>
+                    <span className="text-xs font-semibold text-white">
+                      {pack.weekendPrice} MAD
+                    </span>
+                  </div>
                 </div>
 
                 <ul className="flex flex-1 flex-col gap-3.5">
@@ -82,6 +93,17 @@ export function Pricing() {
             </AnimateIn>
           ))}
         </div>
+
+        <AnimateIn>
+          <div className="mx-auto flex w-fit items-center gap-2.5 rounded-full border border-border bg-surface px-5 py-2.5 text-sm text-foreground-muted">
+            <Info className="size-4 shrink-0 text-primary-light" aria-hidden />
+            <span>
+              Tarif semaine du <span className="font-medium text-white">lundi au jeudi</span>,
+              tarif weekend du{" "}
+              <span className="font-medium text-white">vendredi au dimanche</span>.
+            </span>
+          </div>
+        </AnimateIn>
       </Container>
     </section>
   );

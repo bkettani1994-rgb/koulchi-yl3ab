@@ -22,6 +22,7 @@ export const whatsappHref = (message?: string) =>
 
 export const NAV_LINKS = [
   { label: "Avantages", href: "#avantages" },
+  { label: "Jeux", href: "#jeux" },
   { label: "Tarifs", href: "#tarifs" },
   { label: "Comment ça marche", href: "#comment-ca-marche" },
   { label: "Avis", href: "#avis" },

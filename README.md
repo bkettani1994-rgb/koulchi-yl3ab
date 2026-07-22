@@ -38,6 +38,31 @@ Le visuel de la PS5 dans le hero (`src/components/sections/hero/PS5Showcase.tsx`
 et les tuiles de la galerie sont des compositions abstraites en CSS/SVG (pas de
 photo produit réelle) — à remplacer par de vraies photos si disponibles.
 
+### Jaquettes de jeux (section "Jeux disponibles")
+
+Les 3 emplacements dans `src/lib/data.ts` (`GAMES`) affichent une jaquette
+vectorielle générique en attendant les vraies jaquettes. Pour ajouter un
+visuel réel, renseigne `coverImageUrl` (et le vrai `title`) sur l'entrée
+correspondante :
+
+```ts
+export const GAMES: Game[] = [
+  { title: "EA Sports FC 25", genre: "Sport", coverImageUrl: "/games/fc25.png" },
+  // ...
+];
+```
+
+Place les fichiers dans `public/games/` (ou donne une URL externe) — l'image
+remplace automatiquement la jaquette vectorielle dès que `coverImageUrl` est
+renseigné.
+
+### Tarifs semaine / weekend
+
+Les prix (`weekdayPrice` / `weekendPrice` dans `PACKS`, `src/lib/data.ts`)
+s'appliquent respectivement du lundi au jeudi et du vendredi au dimanche.
+Le formulaire de réservation calcule automatiquement le tarif applicable en
+fonction de la date choisie.
+
 ## Structure
 
 ```

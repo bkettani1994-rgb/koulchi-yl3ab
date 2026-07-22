@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AnimateIn } from "@/components/ui/AnimateIn";
 import { Button } from "@/components/ui/Button";
-import { PACKS } from "@/lib/data";
+import { PACKS, getPackPrice, isWeekendDay } from "@/lib/data";
 import { SITE, whatsappHref } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -83,6 +83,10 @@ export function ReservationForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const fieldRefs = useRef<Partial<Record<keyof FormValues, HTMLElement | null>>>({});
 
+  const selectedPack = PACKS.find((p) => p.id === values.packId);
+  const selectedDate = values.date ? new Date(`${values.date}T00:00:00`) : undefined;
+  const estimatedPrice = selectedPack ? getPackPrice(selectedPack, selectedDate) : undefined;
+
   const setField = <K extends keyof FormValues>(key: K, value: FormValues[K]) => {
     setValues((prev) => ({ ...prev, [key]: value }));
   };
@@ -114,6 +118,9 @@ export function ReservationForm() {
 
     setStatus("submitting");
     const pack = PACKS.find((p) => p.id === values.packId);
+    const chosenDate = values.date ? new Date(`${values.date}T00:00:00`) : undefined;
+    const price = pack && chosenDate ? getPackPrice(pack, chosenDate) : undefined;
+    const rateLabel = chosenDate && isWeekendDay(chosenDate) ? "tarif weekend" : "tarif semaine";
     const message = [
       `Bonjour ${SITE.name}, je souhaite réserver une PS5 :`,
       `Nom : ${values.fullName}`,
@@ -121,7 +128,7 @@ export function ReservationForm() {
       `Ville : ${values.city}`,
       `Adresse : ${values.address}`,
       `Date souhaitée : ${values.date}`,
-      `Pack : ${pack?.name ?? ""} (${pack?.price ?? ""} MAD)`,
+      `Pack : ${pack?.name ?? ""} — ${price ?? ""} MAD (${rateLabel})`,
       values.comment ? `Commentaire : ${values.comment}` : null,
     ]
       .filter(Boolean)
@@ -322,11 +329,29 @@ export function ReservationForm() {
               >
                 {PACKS.map((pack) => (
                   <option key={pack.id} value={pack.id} className="bg-background-elevated">
-                    {pack.name} — {pack.price} MAD / {pack.duration}
+                    {pack.name} — {pack.weekdayPrice} MAD (Lun-Jeu) / {pack.weekendPrice} MAD
+                    (Ven-Dim)
                   </option>
                 ))}
               </select>
             </Field>
+
+            {selectedPack && (
+              <div className="-mt-2 flex items-center gap-2.5 rounded-2xl border border-border bg-white/[0.03] px-4 py-3 text-sm">
+                <span className="text-foreground-muted">Prix estimé :</span>
+                <span className="font-semibold text-white">{estimatedPrice} MAD</span>
+                {selectedDate && (
+                  <span className="text-xs text-foreground-subtle">
+                    ({isWeekendDay(selectedDate) ? "tarif weekend" : "tarif semaine"})
+                  </span>
+                )}
+                {!selectedDate && (
+                  <span className="text-xs text-foreground-subtle">
+                    (tarif semaine, choisissez une date pour confirmer)
+                  </span>
+                )}
+              </div>
+            )}
 
             <Field label="Commentaire (optionnel)" htmlFor="comment">
               <textarea

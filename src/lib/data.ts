@@ -46,9 +46,10 @@ export const ADVANTAGES: Advantage[] = [
 export type Pack = {
   id: string;
   name: string;
-  price: number;
   duration: string;
   controllers: number;
+  weekdayPrice: number;
+  weekendPrice: number;
   featured?: boolean;
   badge?: string;
   features: string[];
@@ -58,7 +59,8 @@ export const PACKS: Pack[] = [
   {
     id: "standard",
     name: "Pack Standard",
-    price: 100,
+    weekdayPrice: 100,
+    weekendPrice: 150,
     duration: "1 Journée",
     controllers: 2,
     features: ["PS5", "2 Manettes sans fil", "Installation incluse", "Assistance disponible"],
@@ -66,7 +68,8 @@ export const PACKS: Pack[] = [
   {
     id: "pro",
     name: "Pack Pro",
-    price: 125,
+    weekdayPrice: 125,
+    weekendPrice: 175,
     duration: "1 Journée",
     controllers: 3,
     featured: true,
@@ -81,7 +84,8 @@ export const PACKS: Pack[] = [
   {
     id: "royal",
     name: "Pack Royal",
-    price: 150,
+    weekdayPrice: 150,
+    weekendPrice: 200,
     duration: "1 Journée",
     controllers: 4,
     features: [
@@ -92,6 +96,17 @@ export const PACKS: Pack[] = [
     ],
   },
 ];
+
+/** Vendredi, samedi, dimanche = tarif weekend. Lundi à jeudi = tarif semaine. */
+export function isWeekendDay(date: Date) {
+  const day = date.getDay(); // 0 = dimanche, 5 = vendredi, 6 = samedi
+  return day === 0 || day === 5 || day === 6;
+}
+
+export function getPackPrice(pack: Pack, date?: Date) {
+  if (!date) return pack.weekdayPrice;
+  return isWeekendDay(date) ? pack.weekendPrice : pack.weekdayPrice;
+}
 
 export type Step = {
   icon: LucideIcon;
@@ -135,6 +150,19 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   { title: "Famille réunie autour du jeu", category: "Expérience", tall: true },
   { title: "Installation à domicile", category: "Service" },
   { title: "Configuration prête à jouer", category: "Service" },
+];
+
+export type Game = {
+  title: string;
+  genre: string;
+  /** Une fois fournie (PNG/JPG), l'image remplace automatiquement la jaquette vectorielle. */
+  coverImageUrl?: string;
+};
+
+export const GAMES: Game[] = [
+  { title: "Jeu 1", genre: "Titre à venir" },
+  { title: "Jeu 2", genre: "Titre à venir" },
+  { title: "Jeu 3", genre: "Titre à venir" },
 ];
 
 export type Testimonial = {
