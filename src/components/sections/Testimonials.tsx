@@ -55,7 +55,7 @@ export function Testimonials() {
               >
                 <div className="flex items-center gap-1" aria-label={`${active.rating} sur 5 étoiles`}>
                   {Array.from({ length: active.rating }).map((_, i) => (
-                    <Star key={i} className="size-4 fill-primary-light text-primary-light" aria-hidden />
+                    <Star key={i} className="size-4 fill-secondary-light text-secondary-light" aria-hidden />
                   ))}
                 </div>
                 <p className="text-balance text-xl font-medium leading-relaxed text-white sm:text-2xl">

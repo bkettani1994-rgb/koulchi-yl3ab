@@ -14,7 +14,7 @@ export function Hero() {
       {/* Background texture */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="glow-orb absolute -left-32 top-0 h-[420px] w-[420px] bg-primary/25" />
-        <div className="glow-orb absolute -right-24 top-40 h-[380px] w-[380px] bg-primary-light/15" />
+        <div className="glow-orb absolute -right-24 top-40 h-[380px] w-[380px] bg-secondary/15" />
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{

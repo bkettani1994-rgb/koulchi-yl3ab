@@ -11,6 +11,7 @@ export function FinalCTA() {
         <AnimateIn>
           <div className="relative overflow-hidden rounded-[2.5rem] border border-primary-light/30 bg-gradient-to-br from-primary/25 via-background-elevated to-background-elevated px-6 py-16 text-center sm:px-16 sm:py-20">
             <div className="glow-orb absolute left-1/2 top-0 h-64 w-[600px] -translate-x-1/2 -translate-y-1/2 bg-primary-light/30" />
+            <div className="glow-orb absolute -bottom-24 -right-16 h-56 w-56 bg-secondary/25" />
             <div className="relative flex flex-col items-center gap-6">
               <h2 className="text-balance max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
                 Prêt à vivre une expérience gaming exceptionnelle ?

@@ -35,6 +35,19 @@ export default function OpengraphImage() {
         />
         <div
           style={{
+            position: "absolute",
+            width: 600,
+            height: 600,
+            borderRadius: "50%",
+            background: "#E01E26",
+            opacity: 0.28,
+            filter: "blur(120px)",
+            bottom: -200,
+            right: -140,
+          }}
+        />
+        <div
+          style={{
             display: "flex",
             alignItems: "center",
             gap: 20,
@@ -47,7 +60,7 @@ export default function OpengraphImage() {
               width: 72,
               height: 72,
               borderRadius: 20,
-              background: "linear-gradient(135deg, #006FCD, #00A8FF)",
+              background: "linear-gradient(135deg, #006FCD, #E01E26)",
             }}
           />
           <div style={{ display: "flex", fontSize: 44, fontWeight: 700, color: "#fff" }}>

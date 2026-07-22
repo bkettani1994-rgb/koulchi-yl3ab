@@ -14,6 +14,9 @@
   --color-primary: #006fcd;
   --color-primary-light: #00a8ff;
   --color-primary-foreground: #ffffff;
+  --color-secondary: #e01e26;
+  --color-secondary-light: #ff4d4d;
+  --color-secondary-foreground: #ffffff;
   --color-success: #22c55e;
   --color-danger: #ff5c5c;
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
@@ -33,6 +36,9 @@
   --color-primary: var(--color-primary);
   --color-primary-light: var(--color-primary-light);
   --color-primary-foreground: var(--color-primary-foreground);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-light: var(--color-secondary-light);
+  --color-secondary-foreground: var(--color-secondary-foreground);
   --color-success: var(--color-success);
   --color-danger: var(--color-danger);
   --font-sans: var(--font-inter);
@@ -120,6 +126,11 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+}
+
+/* Brand mark gradient (logo colors) */
+.bg-brand-gradient {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
 }
 
 /* Ambient glow blobs */

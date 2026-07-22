@@ -28,9 +28,9 @@ export function AvailabilityCounter({ className }: { className?: string }) {
       )}
       role="status"
     >
-      <Flame className="size-4 text-primary-light" aria-hidden />
+      <Flame className="size-4 text-secondary-light" aria-hidden />
       <span>
-        Plus que <span className="font-semibold text-primary-light">{remaining}</span> PS5
+        Plus que <span className="font-semibold text-secondary-light">{remaining}</span> PS5
         disponibles aujourd&apos;hui
       </span>
     </div>

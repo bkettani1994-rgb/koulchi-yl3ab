@@ -35,7 +35,7 @@ export function Header() {
     >
       <Container className="flex items-center justify-between">
         <a href="#" className="flex items-center gap-2.5" aria-label={`${SITE.name} — Accueil`}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-light">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-gradient">
             <Gamepad2 className="size-5 text-white" aria-hidden />
           </span>
           <span className="text-base font-semibold tracking-tight text-white">{SITE.name}</span>

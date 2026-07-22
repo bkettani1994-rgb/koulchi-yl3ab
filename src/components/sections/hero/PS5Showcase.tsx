@@ -8,7 +8,7 @@ export function PS5Showcase() {
     <div className="relative mx-auto flex h-[420px] w-full max-w-lg items-center justify-center sm:h-[500px] lg:h-[560px]">
       {/* Ambient glow orbs */}
       <div className="glow-orb animate-glow-pulse absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 bg-primary/30" />
-      <div className="glow-orb absolute right-4 top-6 h-40 w-40 bg-primary-light/25" />
+      <div className="glow-orb absolute right-4 top-6 h-40 w-40 bg-secondary/25" />
 
       {/* Floating console panel */}
       <motion.div
@@ -53,7 +53,7 @@ export function PS5Showcase() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-light">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-light">
           <Gamepad2 className="size-4 text-white" aria-hidden />
         </span>
         <div>

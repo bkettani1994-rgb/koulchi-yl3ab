@@ -21,6 +21,7 @@ export function Gallery() {
         <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
           {GALLERY_ITEMS.map((item, index) => {
             const Icon = ICONS[index % ICONS.length];
+            const isRed = index % 2 === 1;
             return (
               <AnimateIn key={item.title} delay={(index % 3) * 0.08} className="break-inside-avoid">
                 <div
@@ -29,12 +30,22 @@ export function Gallery() {
                     item.tall ? "h-80" : "h-56",
                   )}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/25 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-90" />
+                  <div
+                    className={cn(
+                      "absolute inset-0 bg-gradient-to-br via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-90",
+                      isRed ? "from-secondary/25" : "from-primary/25",
+                    )}
+                  />
                   <Icon
                     className="absolute right-6 top-6 size-10 text-white/15 transition-transform duration-300 group-hover:scale-110 group-hover:text-white/25"
                     aria-hidden
                   />
-                  <span className="relative w-fit rounded-full bg-black/40 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-primary-light backdrop-blur-sm">
+                  <span
+                    className={cn(
+                      "relative w-fit rounded-full bg-black/40 px-3 py-1 text-[11px] font-medium uppercase tracking-wide backdrop-blur-sm",
+                      isRed ? "text-secondary-light" : "text-primary-light",
+                    )}
+                  >
                     {item.category}
                   </span>
                   <h3 className="relative mt-2 text-lg font-semibold text-white">{item.title}</h3>

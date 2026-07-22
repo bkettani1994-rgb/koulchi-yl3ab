@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
             <a href="#" className="flex items-center gap-2.5">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-light">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-gradient">
                 <Gamepad2 className="size-5 text-white" aria-hidden />
               </span>
               <span className="text-base font-semibold tracking-tight text-white">

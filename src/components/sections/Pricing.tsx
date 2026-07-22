@@ -32,7 +32,7 @@ export function Pricing() {
                 )}
               >
                 {pack.badge && (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-primary to-primary-light px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white shadow-[0_8px_20px_-6px_rgba(0,111,205,0.7)]">
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-secondary px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white shadow-[0_8px_20px_-6px_rgba(224,30,38,0.7)]">
                     {pack.badge}
                   </span>
                 )}
