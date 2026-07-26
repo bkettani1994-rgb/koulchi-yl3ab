@@ -161,6 +161,29 @@ export function ReservationForm() {
       .filter(Boolean)
       .join("\n");
 
+    // Best-effort: log the reservation to Google Sheets. Never blocks the
+    // WhatsApp flow below — that stays the reliable path even if the sheet
+    // isn't configured yet or the request fails.
+    fetch("/api/reservations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName: values.fullName,
+        phone: values.phone,
+        city: values.city,
+        address: values.address,
+        date: values.date,
+        days,
+        packName: pack?.name ?? "",
+        rateLabel,
+        pricePerDay: pricePerDay ?? 0,
+        total: total ?? 0,
+        comment: values.comment,
+      }),
+    }).catch((error) => {
+      console.error("Échec de l'enregistrement Google Sheets:", error);
+    });
+
     window.setTimeout(() => {
       setStatus("success");
       window.open(whatsappHref(message), "_blank", "noopener,noreferrer");
