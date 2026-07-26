@@ -99,6 +99,7 @@ export function ReservationForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const fieldRefs = useRef<Partial<Record<keyof FormValues, HTMLElement | null>>>({});
 
   const selectedPack = PACKS.find((p) => p.id === values.packId);
@@ -116,7 +117,7 @@ export function ReservationForm() {
     setErrors(validate(values));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nextErrors = validate(values);
     setErrors(nextErrors);
@@ -138,59 +139,65 @@ export function ReservationForm() {
     }
 
     setStatus("submitting");
+    setSubmitError(null);
+
     const pack = PACKS.find((p) => p.id === values.packId);
     const chosenDate = values.date ? new Date(`${values.date}T00:00:00`) : undefined;
     const days = Math.max(1, Number(values.days) || 1);
     const pricePerDay = pack && chosenDate ? getPackPrice(pack, chosenDate) : undefined;
     const total = pricePerDay !== undefined ? pricePerDay * days : undefined;
     const rateLabel = chosenDate && isWeekendDay(chosenDate) ? "tarif weekend" : "tarif semaine";
-    const message = [
-      `Bonjour ${SITE.name}, je souhaite réserver une PS5 :`,
+
+    try {
+      const response = await fetch("/api/reservations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: values.fullName,
+          phone: values.phone,
+          city: values.city,
+          address: values.address,
+          date: values.date,
+          days,
+          packName: pack?.name ?? "",
+          rateLabel,
+          pricePerDay: pricePerDay ?? 0,
+          total: total ?? 0,
+          comment: values.comment,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Réponse ${response.status} de /api/reservations`);
+      }
+
+      setStatus("success");
+    } catch (error) {
+      console.error("Échec de l'enregistrement de la réservation:", error);
+      setSubmitError(
+        "Une erreur est survenue lors de l'enregistrement de votre réservation. Réessayez, ou contactez-nous directement sur WhatsApp.",
+      );
+      setStatus("idle");
+    }
+  };
+
+  if (status === "success") {
+    const rateLabel = selectedDate && isWeekendDay(selectedDate) ? "tarif weekend" : "tarif semaine";
+    const confirmMessage = [
+      `Bonjour ${SITE.name}, je viens de réserver une PS5 sur le site (réservation déjà enregistrée) :`,
       `Nom : ${values.fullName}`,
       `Téléphone : ${values.phone}`,
       `Ville : ${values.city}`,
       `Adresse : ${values.address}`,
       `Date souhaitée : ${values.date}`,
-      `Nombre de jours : ${days}`,
-      `Pack : ${pack?.name ?? ""} — ${pricePerDay ?? ""} MAD/jour (${rateLabel})`,
-      days > 1
-        ? `Total estimé : ${total} MAD pour ${days} jours (tarif dégressif à confirmer par votre équipe)`
-        : `Total estimé : ${total} MAD`,
+      `Nombre de jours : ${selectedDays}`,
+      `Pack : ${selectedPack?.name ?? ""} — ${estimatedPrice ?? ""} MAD/jour (${rateLabel})`,
+      `Total estimé : ${estimatedTotal} MAD`,
       values.comment ? `Commentaire : ${values.comment}` : null,
     ]
       .filter(Boolean)
       .join("\n");
 
-    // Best-effort: log the reservation to Google Sheets. Never blocks the
-    // WhatsApp flow below — that stays the reliable path even if the sheet
-    // isn't configured yet or the request fails.
-    fetch("/api/reservations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fullName: values.fullName,
-        phone: values.phone,
-        city: values.city,
-        address: values.address,
-        date: values.date,
-        days,
-        packName: pack?.name ?? "",
-        rateLabel,
-        pricePerDay: pricePerDay ?? 0,
-        total: total ?? 0,
-        comment: values.comment,
-      }),
-    }).catch((error) => {
-      console.error("Échec de l'enregistrement Google Sheets:", error);
-    });
-
-    window.setTimeout(() => {
-      setStatus("success");
-      window.open(whatsappHref(message), "_blank", "noopener,noreferrer");
-    }, 700);
-  };
-
-  if (status === "success") {
     return (
       <section id="reservation" className="relative scroll-mt-24 py-24 sm:py-32">
         <Container className="mx-auto max-w-xl">
@@ -203,19 +210,19 @@ export function ReservationForm() {
             <span className="flex size-14 items-center justify-center rounded-full bg-primary/20">
               <CheckCircle2 className="size-7 text-primary-light" aria-hidden />
             </span>
-            <h3 className="text-2xl font-semibold text-white">Demande envoyée !</h3>
+            <h3 className="text-2xl font-semibold text-white">Réservation confirmée !</h3>
             <p className="text-sm leading-relaxed text-foreground-muted">
-              Votre demande de réservation a bien été préparée. Confirmez-la sur WhatsApp pour
-              que notre équipe puisse la valider rapidement.
+              Votre réservation a bien été enregistrée. Notre équipe la traite et vous contactera
+              pour finaliser les détails de livraison.
             </p>
             <Button
-              href={whatsappHref()}
-              variant="primary"
+              href={whatsappHref(confirmMessage)}
+              variant="secondary"
               size="lg"
               icon={MessageSquare}
               className="mt-2"
             >
-              Ouvrir WhatsApp
+              Contacter sur WhatsApp
             </Button>
             <button
               type="button"
@@ -455,6 +462,12 @@ export function ReservationForm() {
               />
             </Field>
 
+            {submitError && (
+              <p role="alert" aria-live="polite" className="text-center text-sm font-medium text-danger">
+                {submitError}
+              </p>
+            )}
+
             <Button
               type="submit"
               variant="primary"
@@ -472,8 +485,7 @@ export function ReservationForm() {
               )}
             </Button>
             <p className="text-center text-xs text-foreground-subtle">
-              En réservant, votre demande sera transmise à notre équipe via WhatsApp pour
-              confirmation.
+              En réservant, votre demande est enregistrée directement par notre équipe.
             </p>
           </form>
         </AnimateIn>
