@@ -20,11 +20,10 @@ npm run lint    # ESLint
 
 ## À personnaliser avant mise en ligne
 
-Toutes les informations de contact dans `src/lib/constants.ts` sont des
-**placeholders** et doivent être remplacées par les vraies coordonnées avant le
-lancement :
+Dans `src/lib/constants.ts`, `phoneDisplay` / `phoneHref` / `whatsappNumber`
+sont déjà les vraies coordonnées. Le reste est encore **placeholder** et à
+remplacer avant le lancement :
 
-- `phoneDisplay` / `phoneHref` / `whatsappNumber` — numéro de téléphone réel
 - `email`, `facebook`, `instagram` — liens réels
 - `url` — nom de domaine réel (utilisé pour le SEO et l'Open Graph)
 - `deliveryZones` — zones de livraison réellement couvertes
@@ -34,27 +33,23 @@ prépare la demande et ouvre WhatsApp avec un message pré-rempli — il n'y a p
 encore de backend/API de réservation. À connecter à un service d'e-mail, une
 base de données ou un CRM selon les besoins.
 
-Le visuel de la PS5 dans le hero (`src/components/sections/hero/PS5Showcase.tsx`)
-et les tuiles de la galerie sont des compositions abstraites en CSS/SVG (pas de
-photo produit réelle) — à remplacer par de vraies photos si disponibles.
+Le hero (`src/components/sections/Hero.tsx`), la galerie (`GALLERY_ITEMS` dans
+`src/lib/data.ts`), les jaquettes de jeux (`GAMES`) et le logo du header
+(`SITE.logoUrl`) utilisent déjà de vrais visuels hébergés sur Cloudinary.
 
 ### Jaquettes de jeux (section "Jeux disponibles")
 
-Les 3 emplacements dans `src/lib/data.ts` (`GAMES`) affichent une jaquette
-vectorielle générique en attendant les vraies jaquettes. Pour ajouter un
-visuel réel, renseigne `coverImageUrl` (et le vrai `title`) sur l'entrée
-correspondante :
+Chaque entrée de `GAMES` (`src/lib/data.ts`) accepte un `coverImageUrl` réel :
 
 ```ts
 export const GAMES: Game[] = [
-  { title: "EA Sports FC 25", genre: "Sport", coverImageUrl: "/games/fc25.png" },
+  { title: "FC 26", genre: "Sport / Football", coverImageUrl: "https://..." },
   // ...
 ];
 ```
 
-Place les fichiers dans `public/games/` (ou donne une URL externe) — l'image
-remplace automatiquement la jaquette vectorielle dès que `coverImageUrl` est
-renseigné.
+Une jaquette vectorielle générique s'affiche automatiquement en fallback si
+`coverImageUrl` est omis (ex: nouveau jeu ajouté sans visuel pour l'instant).
 
 ### Tarifs semaine / weekend
 

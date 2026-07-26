@@ -1,4 +1,5 @@
-// Placeholder business info — replace with real values before going live.
+// phoneDisplay/phoneHref/whatsappNumber are real. Other fields below are still
+// placeholders — replace with real values before going live.
 export const SITE = {
   name: "Koulchi Yl3ab",
   tagline: "Location de PlayStation 5 à domicile",
@@ -7,9 +8,9 @@ export const SITE = {
     "https://res.cloudinary.com/diptsoc4h/image/upload/v1785069658/logos_they_trust_us_500_x_500_px_tu0xqx.png",
   description:
     "Louez une PlayStation 5 livrée directement chez vous au Maroc. Installation incluse, assistance disponible, réservation en quelques minutes.",
-  phoneDisplay: "+212 6 00 00 00 00",
-  phoneHref: "tel:+212600000000",
-  whatsappNumber: "212600000000",
+  phoneDisplay: "+212 709-202017",
+  phoneHref: "tel:+212709202017",
+  whatsappNumber: "212709202017",
   whatsappMessage: "Bonjour, je souhaite réserver une PlayStation 5 pour mon domicile.",
   email: "contact@koulchiyl3ab.ma",
   facebook: "https://facebook.com/koulchiyl3ab",

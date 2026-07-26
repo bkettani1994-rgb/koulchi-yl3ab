@@ -427,7 +427,7 @@ export function ReservationForm() {
                 rows={3}
                 value={values.comment}
                 onChange={(e) => setField("comment", e.target.value)}
-                className="w-full rounded-2xl border border-border bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-foreground-subtle focus:border-primary-light/60 focus:bg-white/[0.05] focus:outline-none"
+                className="w-full min-w-0 max-w-full box-border rounded-2xl border border-border bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-foreground-subtle focus:border-primary-light/60 focus:bg-white/[0.05] focus:outline-none"
                 placeholder="Jeux préférés, étage, code d'accès…"
               />
             </Field>
@@ -496,7 +496,7 @@ function InputIcon({ icon: Icon }: { icon: typeof User }) {
 
 function inputClasses(hasError: boolean) {
   return cn(
-    "h-12 w-full min-w-0 rounded-2xl border bg-white/[0.03] pl-11 pr-4 text-sm text-white placeholder:text-foreground-subtle transition-colors focus:outline-none",
+    "h-12 w-full min-w-0 max-w-full box-border rounded-2xl border bg-white/[0.03] pl-11 pr-4 text-sm text-white placeholder:text-foreground-subtle transition-colors focus:outline-none",
     hasError
       ? "border-danger/70 focus:border-danger"
       : "border-border focus:border-primary-light/60 focus:bg-white/[0.05]",
