@@ -19,16 +19,14 @@ export function Hero() {
         au Maroc
       </h1>
 
-      {/* Banner: full width, natural aspect ratio, never cropped. */}
-      <div className="relative">
+      {/* Banner: full width, natural aspect ratio, never cropped, starts below the fixed header. */}
+      <div className="relative pt-[85px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={BANNER_SRC}
           alt="PlayStation 5 et manette DualSense — location à domicile au Maroc"
           className="block h-auto w-full"
         />
-        {/* Subtle top fade so the fixed nav stays readable over the image. */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background/60 to-transparent" />
       </div>
 
       {/* Content band, pulled up over the banner's lower edge. Normal flow so it always

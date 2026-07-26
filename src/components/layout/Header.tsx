@@ -29,8 +29,8 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled ? "glass border-b border-border py-3" : "border-b border-transparent py-5",
+        "fixed inset-x-0 top-0 z-50 border-b border-border bg-background-elevated transition-all duration-300",
+        scrolled ? "py-3 shadow-lg shadow-black/30" : "py-5",
       )}
     >
       <Container className="flex items-center justify-between">
@@ -80,7 +80,10 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-0 top-[64px] bottom-0 z-40 overflow-y-auto border-t border-border bg-background lg:hidden"
+            className={cn(
+              "fixed inset-x-0 bottom-0 z-40 overflow-y-auto border-t border-border bg-background lg:hidden",
+              scrolled ? "top-[69px]" : "top-[85px]",
+            )}
           >
             <Container className="flex flex-col gap-1 py-6">
               {NAV_LINKS.map((link) => (
