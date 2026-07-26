@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloatingButton } from "@/components/layout/WhatsAppFloatingButton";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 import { Hero } from "@/components/sections/Hero";
+import { AvailabilityCounter } from "@/components/ui/AvailabilityCounter";
 import { SocialProof } from "@/components/sections/SocialProof";
 import { Advantages } from "@/components/sections/Advantages";
 import { Games } from "@/components/sections/Games";
@@ -78,6 +79,9 @@ export default function Home() {
       <Header />
       <main className="pb-24 lg:pb-0">
         <Hero />
+        <div className="flex justify-center py-6">
+          <AvailabilityCounter />
+        </div>
         <SocialProof />
         <Advantages />
         <Games />
