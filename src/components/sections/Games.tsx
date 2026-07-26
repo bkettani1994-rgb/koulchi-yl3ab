@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Gamepad2 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -12,7 +13,7 @@ export function Games() {
         <SectionHeading
           eyebrow="Jeux disponibles"
           title="Vos jeux préférés vous attendent"
-          description="Une sélection de titres multijoueurs et solo installés sur chaque PS5 livrée. Jaquettes à venir."
+          description="Une sélection de titres multijoueurs et solo installés sur chaque PS5 livrée."
         />
 
         <div className="grid gap-6 sm:grid-cols-3">
@@ -21,11 +22,12 @@ export function Games() {
               <div className="group flex flex-col gap-4">
                 <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-border bg-background-elevated transition-transform duration-300 group-hover:-translate-y-1.5">
                   {game.coverImageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={game.coverImageUrl}
                       alt={game.title}
-                      className="h-full w-full object-cover"
+                      fill
+                      sizes="(min-width: 640px) 33vw, 100vw"
+                      className="object-cover"
                     />
                   ) : (
                     <>

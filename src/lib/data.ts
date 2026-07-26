@@ -193,9 +193,24 @@ export type Game = {
 };
 
 export const GAMES: Game[] = [
-  { title: "Jeu 1", genre: "Titre à venir" },
-  { title: "Jeu 2", genre: "Titre à venir" },
-  { title: "Jeu 3", genre: "Titre à venir" },
+  {
+    title: "FC 26",
+    genre: "Sport / Football",
+    coverImageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785069437/2_86__t4u6xg.webp",
+  },
+  {
+    title: "Spider-Man",
+    genre: "Action / Aventure",
+    coverImageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785069441/1_82__b4hahv.webp",
+  },
+  {
+    title: "Call of Duty",
+    genre: "FPS / Action",
+    coverImageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785069416/3_72__nb9eii.webp",
+  },
 ];
 
 export type Testimonial = {
