@@ -141,15 +141,48 @@ export type GalleryItem = {
   title: string;
   category: string;
   tall?: boolean;
+  imageUrl?: string;
 };
 
 export const GALLERY_ITEMS: GalleryItem[] = [
-  { title: "Console PS5", category: "Matériel", tall: true },
-  { title: "Manettes DualSense", category: "Matériel" },
-  { title: "Soirée gaming entre amis", category: "Expérience" },
-  { title: "Famille réunie autour du jeu", category: "Expérience", tall: true },
-  { title: "Installation à domicile", category: "Service" },
-  { title: "Configuration prête à jouer", category: "Service" },
+  {
+    title: "Console PS5",
+    category: "Matériel",
+    tall: true,
+    imageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785068365/ChatGPT-Image-26-juil.-2026_-13_07_30_pbcxsi.webp",
+  },
+  {
+    title: "Manettes DualSense",
+    category: "Matériel",
+    imageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785068358/ChatGPT-Image-26-juil.-2026_-13_13_01_wmxvcw.webp",
+  },
+  {
+    title: "Soirée gaming entre amis",
+    category: "Expérience",
+    imageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785068361/ChatGPT-Image-26-juil.-2026_-13_09_33_oh7nv8.webp",
+  },
+  {
+    title: "Famille réunie autour du jeu",
+    category: "Expérience",
+    tall: true,
+    imageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785068363/ChatGPT-Image-26-juil.-2026_-13_15_28_kfh8hh.webp",
+  },
+  {
+    title: "Installation à domicile",
+    category: "Service",
+    imageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785068336/ChatGPT-Image-26-juil.-2026_-13_11_39_rxeent.webp",
+  },
+  {
+    title: "Configuration prête à jouer",
+    category: "Service",
+    imageUrl:
+      "https://res.cloudinary.com/diptsoc4h/image/upload/v1785068448/ChatGPT-Image-26-juil.-2026_-13_15_59_etwhhf.webp",
+  },
 ];
 
 export type Game = {
