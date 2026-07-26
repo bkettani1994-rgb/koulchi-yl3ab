@@ -8,7 +8,7 @@ import { PACKS } from "@/lib/data";
 
 export function Pricing() {
   return (
-    <section id="tarifs" className="relative scroll-mt-24 py-24 sm:py-32">
+    <section id="tarifs" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="glow-orb absolute left-1/2 top-1/3 h-[420px] w-[600px] -translate-x-1/2 bg-primary/10" />
       </div>
