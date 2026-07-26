@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Gamepad2, Menu, MessageCircle, X } from "lucide-react";
+import { Menu, MessageCircle, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { NAV_LINKS, SITE, whatsappHref } from "@/lib/constants";
@@ -35,8 +36,8 @@ export function Header() {
     >
       <Container className="flex items-center justify-between">
         <a href="#" className="flex items-center gap-2.5" aria-label={`${SITE.name} — Accueil`}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-gradient">
-            <Gamepad2 className="size-5 text-white" aria-hidden />
+          <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-xl">
+            <Image src={SITE.logoUrl} alt="" fill sizes="36px" className="object-cover" />
           </span>
           <span className="text-base font-semibold tracking-tight text-white">{SITE.name}</span>
         </a>

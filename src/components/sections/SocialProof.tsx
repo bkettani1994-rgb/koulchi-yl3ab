@@ -1,11 +1,7 @@
-import Image from "next/image";
 import { ShieldCheck, Star, Timer, Headset } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { StaggerGroup, StaggerItem, AnimateIn } from "@/components/ui/AnimateIn";
+import { StaggerGroup, StaggerItem } from "@/components/ui/AnimateIn";
 import { STATS } from "@/lib/data";
-
-const TRUST_LOGOS_SRC =
-  "https://res.cloudinary.com/diptsoc4h/image/upload/v1785069658/logos_they_trust_us_500_x_500_px_tu0xqx.png";
 
 const ICONS = [ShieldCheck, Star, Timer, Headset];
 
@@ -37,27 +33,16 @@ export function SocialProof() {
           })}
         </StaggerGroup>
 
-        <AnimateIn className="mt-10 flex flex-col items-center gap-4 border-t border-border pt-8">
-          <div className="relative h-24 w-24 opacity-90 sm:h-28 sm:w-28">
-            <Image
-              src={TRUST_LOGOS_SRC}
-              alt="Marques et partenaires qui nous font confiance"
-              fill
-              sizes="112px"
-              className="object-contain"
-            />
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {TRUST_BADGES.map((badge) => (
-              <span
-                key={badge}
-                className="rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-foreground-muted"
-              >
-                {badge}
-              </span>
-            ))}
-          </div>
-        </AnimateIn>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3 border-t border-border pt-8">
+          {TRUST_BADGES.map((badge) => (
+            <span
+              key={badge}
+              className="rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-foreground-muted"
+            >
+              {badge}
+            </span>
+          ))}
+        </div>
       </Container>
     </section>
   );

@@ -3,6 +3,8 @@ export const SITE = {
   name: "Koulchi Yl3ab",
   tagline: "Location de PlayStation 5 à domicile",
   url: "https://koulchiyl3ab.ma",
+  logoUrl:
+    "https://res.cloudinary.com/diptsoc4h/image/upload/v1785069658/logos_they_trust_us_500_x_500_px_tu0xqx.png",
   description:
     "Louez une PlayStation 5 livrée directement chez vous au Maroc. Installation incluse, assistance disponible, réservation en quelques minutes.",
   phoneDisplay: "+212 6 00 00 00 00",
