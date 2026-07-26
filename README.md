@@ -61,34 +61,45 @@ formulaire continue de fonctionner normalement via WhatsApp).
 automatiquement si besoin, avec un en-tête déjà mis en forme aux couleurs de
 Koulchi Yl3ab (fond bleu `#006FCD`, texte blanc en gras).
 
-### Configuration (compte de service Google)
+### Configuration (Google Apps Script — aucune Google Cloud Console requise)
 
-1. Sur [Google Cloud Console](https://console.cloud.google.com/), crée un
-   projet (ou réutilise un projet existant).
-2. Active l'**API Google Sheets** pour ce projet (menu *API et services* →
-   *Bibliothèque*).
-3. Crée un **compte de service** (*IAM et administration* → *Comptes de
-   service* → *Créer un compte de service*).
-4. Sur ce compte de service, génère une **clé JSON** (*Clés* → *Ajouter une
-   clé* → *Créer une clé* → JSON) et télécharge le fichier.
-5. Crée (ou ouvre) le Google Sheet qui recevra les réservations, puis
-   **partage-le** avec l'adresse email du compte de service (champ
-   `client_email` dans le JSON téléchargé), avec le rôle **Éditeur**.
-6. Récupère l'ID de la feuille dans son URL :
-   `https://docs.google.com/spreadsheets/d/`**`CET_ID`**`/edit`.
+1. Crée (ou ouvre) le Google Sheet qui doit recevoir les réservations.
+2. Dans ce Sheet, va dans **Extensions → Apps Script**. Un éditeur de script
+   s'ouvre dans un nouvel onglet.
+3. Supprime le contenu par défaut (`function myFunction() {}`) et colle-y
+   tout le contenu du fichier
+   [`google-apps-script/reservations.gs`](./google-apps-script/reservations.gs)
+   de ce dépôt. Clique sur l'icône 💾 pour enregistrer (nomme le projet si
+   demandé, ex. "Réservations Koulchi Yl3ab").
+4. *(Optionnel)* Le fichier contient déjà un secret généré aléatoirement
+   (`SHARED_SECRET`). Tu peux le garder tel quel, ou le remplacer par une
+   autre valeur — dans ce cas, utilise exactement la même valeur à l'étape 7.
+5. Clique sur **Déployer → Nouveau déploiement**. Type : **Application Web**.
+   Renseigne :
+   - **Exécuter en tant que** : Moi (ton compte Google)
+   - **Qui a accès** : Tout le monde
+   
+   Clique sur **Déployer**. Google demandera d'autoriser le script à accéder
+   à ce Sheet la première fois (c'est normal, c'est ton propre script).
+6. Une fois déployé, copie l'**URL de l'application Web** affichée (elle se
+   termine par `/exec`).
 7. Renseigne les variables d'environnement (voir `.env.example`) — en local
    dans `.env.local`, et en production dans les *Environment Variables* du
    projet Vercel :
 
    | Variable | Valeur |
    |----------|--------|
-   | `GOOGLE_SHEETS_CLIENT_EMAIL` | champ `client_email` du JSON |
-   | `GOOGLE_SHEETS_PRIVATE_KEY` | champ `private_key` du JSON (garder les `\n`, entre guillemets) |
-   | `GOOGLE_SHEETS_SPREADSHEET_ID` | l'ID récupéré à l'étape 6 |
-   | `GOOGLE_SHEETS_SHEET_NAME` | *(optionnel)* nom de l'onglet, `Réservations` par défaut |
+   | `GOOGLE_SHEETS_WEBHOOK_URL` | l'URL copiée à l'étape 6 |
+   | `GOOGLE_SHEETS_WEBHOOK_SECRET` | la valeur de `SHARED_SECRET` dans le script (étape 4) |
 
 8. Redéploie (ou relance `npm run dev` en local) — les nouvelles réservations
-   apparaissent désormais dans la feuille.
+   apparaissent désormais dans l'onglet "Réservations" de la feuille, avec
+   l'en-tête déjà mis en forme aux couleurs de Koulchi Yl3ab.
+
+**Si tu modifies le script plus tard** (ex. changer `SHARED_SECRET` ou
+`SHEET_NAME`), il faut le redéployer : **Déployer → Gérer les déploiements**
+→ icône crayon sur le déploiement existant → **Nouvelle version** → Déployer.
+L'URL reste la même, pas besoin de mettre à jour la variable d'environnement.
 
 ### Tarifs semaine / weekend
 
