@@ -2,7 +2,16 @@
 
 import { useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import { CalendarDays, CheckCircle2, Loader2, MapPin, MessageSquare, Phone, User } from "lucide-react";
+import {
+  CalendarDays,
+  CalendarRange,
+  CheckCircle2,
+  Loader2,
+  MapPin,
+  MessageSquare,
+  Phone,
+  User,
+} from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AnimateIn } from "@/components/ui/AnimateIn";
@@ -17,6 +26,7 @@ type FormValues = {
   city: string;
   address: string;
   date: string;
+  days: string;
   packId: string;
   comment: string;
 };
@@ -27,6 +37,7 @@ const INITIAL_VALUES: FormValues = {
   city: "",
   address: "",
   date: "",
+  days: "1",
   packId: PACKS[1]?.id ?? PACKS[0].id,
   comment: "",
 };
@@ -60,6 +71,12 @@ function validate(values: FormValues): Errors {
       errors.date = "La date doit être aujourd'hui ou dans le futur.";
     }
   }
+  const daysNumber = Number(values.days);
+  if (!values.days || !Number.isInteger(daysNumber) || daysNumber < 1) {
+    errors.days = "Merci d'indiquer un nombre de jours valide.";
+  } else if (daysNumber > 30) {
+    errors.days = "Pour plus de 30 jours, contactez-nous directement sur WhatsApp.";
+  }
   if (!values.packId) {
     errors.packId = "Merci de choisir un pack.";
   }
@@ -73,6 +90,7 @@ const FIELD_REFS_ORDER: (keyof FormValues)[] = [
   "city",
   "address",
   "date",
+  "days",
   "packId",
 ];
 
@@ -85,7 +103,9 @@ export function ReservationForm() {
 
   const selectedPack = PACKS.find((p) => p.id === values.packId);
   const selectedDate = values.date ? new Date(`${values.date}T00:00:00`) : undefined;
+  const selectedDays = Math.max(1, Number(values.days) || 1);
   const estimatedPrice = selectedPack ? getPackPrice(selectedPack, selectedDate) : undefined;
+  const estimatedTotal = estimatedPrice !== undefined ? estimatedPrice * selectedDays : undefined;
 
   const setField = <K extends keyof FormValues>(key: K, value: FormValues[K]) => {
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -106,6 +126,7 @@ export function ReservationForm() {
       city: true,
       address: true,
       date: true,
+      days: true,
       packId: true,
       comment: true,
     });
@@ -119,7 +140,9 @@ export function ReservationForm() {
     setStatus("submitting");
     const pack = PACKS.find((p) => p.id === values.packId);
     const chosenDate = values.date ? new Date(`${values.date}T00:00:00`) : undefined;
-    const price = pack && chosenDate ? getPackPrice(pack, chosenDate) : undefined;
+    const days = Math.max(1, Number(values.days) || 1);
+    const pricePerDay = pack && chosenDate ? getPackPrice(pack, chosenDate) : undefined;
+    const total = pricePerDay !== undefined ? pricePerDay * days : undefined;
     const rateLabel = chosenDate && isWeekendDay(chosenDate) ? "tarif weekend" : "tarif semaine";
     const message = [
       `Bonjour ${SITE.name}, je souhaite réserver une PS5 :`,
@@ -128,7 +151,11 @@ export function ReservationForm() {
       `Ville : ${values.city}`,
       `Adresse : ${values.address}`,
       `Date souhaitée : ${values.date}`,
-      `Pack : ${pack?.name ?? ""} — ${price ?? ""} MAD (${rateLabel})`,
+      `Nombre de jours : ${days}`,
+      `Pack : ${pack?.name ?? ""} — ${pricePerDay ?? ""} MAD/jour (${rateLabel})`,
+      days > 1
+        ? `Total estimé : ${total} MAD pour ${days} jours (tarif dégressif à confirmer par votre équipe)`
+        : `Total estimé : ${total} MAD`,
       values.comment ? `Commentaire : ${values.comment}` : null,
     ]
       .filter(Boolean)
@@ -267,6 +294,30 @@ export function ReservationForm() {
               </Field>
 
               <Field
+                label="Adresse complète"
+                htmlFor="address"
+                error={touched.address ? errors.address : undefined}
+              >
+                <InputIcon icon={MapPin} />
+                <input
+                  id="address"
+                  name="address"
+                  autoComplete="street-address"
+                  required
+                  ref={(el) => {
+                    fieldRefs.current.address = el;
+                  }}
+                  value={values.address}
+                  onChange={(e) => setField("address", e.target.value)}
+                  onBlur={() => handleBlur("address")}
+                  className={inputClasses(Boolean(touched.address && errors.address))}
+                  placeholder="Rue, quartier, numéro…"
+                />
+              </Field>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2">
+              <Field
                 label="Date souhaitée"
                 htmlFor="date"
                 error={touched.date ? errors.date : undefined}
@@ -286,29 +337,33 @@ export function ReservationForm() {
                   className={inputClasses(Boolean(touched.date && errors.date))}
                 />
               </Field>
-            </div>
 
-            <Field
-              label="Adresse complète"
-              htmlFor="address"
-              error={touched.address ? errors.address : undefined}
-            >
-              <InputIcon icon={MapPin} />
-              <input
-                id="address"
-                name="address"
-                autoComplete="street-address"
-                required
-                ref={(el) => {
-                  fieldRefs.current.address = el;
-                }}
-                value={values.address}
-                onChange={(e) => setField("address", e.target.value)}
-                onBlur={() => handleBlur("address")}
-                className={inputClasses(Boolean(touched.address && errors.address))}
-                placeholder="Rue, quartier, numéro…"
-              />
-            </Field>
+              <Field
+                label="Nombre de jours"
+                htmlFor="days"
+                error={touched.days ? errors.days : undefined}
+              >
+                <InputIcon icon={CalendarRange} />
+                <input
+                  id="days"
+                  name="days"
+                  type="number"
+                  inputMode="numeric"
+                  min={1}
+                  max={30}
+                  step={1}
+                  required
+                  ref={(el) => {
+                    fieldRefs.current.days = el;
+                  }}
+                  value={values.days}
+                  onChange={(e) => setField("days", e.target.value)}
+                  onBlur={() => handleBlur("days")}
+                  className={inputClasses(Boolean(touched.days && errors.days))}
+                  placeholder="1"
+                />
+              </Field>
+            </div>
 
             <Field
               label="Pack choisi"
@@ -337,18 +392,30 @@ export function ReservationForm() {
             </Field>
 
             {selectedPack && (
-              <div className="-mt-2 flex items-center gap-2.5 rounded-2xl border border-border bg-white/[0.03] px-4 py-3 text-sm">
-                <span className="text-foreground-muted">Prix estimé :</span>
-                <span className="font-semibold text-white">{estimatedPrice} MAD</span>
-                {selectedDate && (
-                  <span className="text-xs text-foreground-subtle">
-                    ({isWeekendDay(selectedDate) ? "tarif weekend" : "tarif semaine"})
-                  </span>
-                )}
-                {!selectedDate && (
-                  <span className="text-xs text-foreground-subtle">
-                    (tarif semaine, choisissez une date pour confirmer)
-                  </span>
+              <div className="-mt-2 flex flex-col gap-1.5 rounded-2xl border border-border bg-white/[0.03] px-4 py-3 text-sm">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="text-foreground-muted">Prix estimé :</span>
+                  <span className="font-semibold text-white">{estimatedPrice} MAD/jour</span>
+                  {selectedDate ? (
+                    <span className="text-xs text-foreground-subtle">
+                      ({isWeekendDay(selectedDate) ? "tarif weekend" : "tarif semaine"})
+                    </span>
+                  ) : (
+                    <span className="text-xs text-foreground-subtle">
+                      (tarif semaine, choisissez une date pour confirmer)
+                    </span>
+                  )}
+                </div>
+                {selectedDays > 1 && (
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="text-foreground-muted">
+                      Total pour {selectedDays} jours :
+                    </span>
+                    <span className="font-semibold text-primary-light">{estimatedTotal} MAD</span>
+                    <span className="text-xs text-foreground-subtle">
+                      (tarif dégressif possible, confirmé par notre équipe)
+                    </span>
+                  </div>
                 )}
               </div>
             )}
@@ -404,11 +471,11 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex min-w-0 flex-col gap-2">
       <label htmlFor={htmlFor} className="text-sm font-medium text-white">
         {label}
       </label>
-      <div className="relative">{children}</div>
+      <div className="relative min-w-0">{children}</div>
       {error && (
         <p role="alert" aria-live="polite" className="text-xs font-medium text-danger">
           {error}
@@ -429,7 +496,7 @@ function InputIcon({ icon: Icon }: { icon: typeof User }) {
 
 function inputClasses(hasError: boolean) {
   return cn(
-    "h-12 w-full rounded-2xl border bg-white/[0.03] pl-11 pr-4 text-sm text-white placeholder:text-foreground-subtle transition-colors focus:outline-none",
+    "h-12 w-full min-w-0 rounded-2xl border bg-white/[0.03] pl-11 pr-4 text-sm text-white placeholder:text-foreground-subtle transition-colors focus:outline-none",
     hasError
       ? "border-danger/70 focus:border-danger"
       : "border-border focus:border-primary-light/60 focus:bg-white/[0.05]",
